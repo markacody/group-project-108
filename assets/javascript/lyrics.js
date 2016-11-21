@@ -91,8 +91,6 @@ var song = {"message": {
 			    }
 			  }
 			};
-			console.log(song);
-			console.log(song.message.body.lyrics.lyrics_body)
 //display response in div
 $('#lyrics').html(song.message.body.lyrics.lyrics_body);
 });/*END Document Ready*/
