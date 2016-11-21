@@ -16,6 +16,7 @@ $.ajax({
             method: 'GET'
         })
         .done(function(response) {
+        	//console logging this reminded that I'm currently not authorized
             console.log(response);
         });
 
@@ -93,4 +94,5 @@ var song = {"message": {
 			};
 //display response in div
 $('#lyrics').html(song.message.body.lyrics.lyrics_body);
+
 });/*END Document Ready*/

@@ -12,7 +12,6 @@ $.ajax({
             method: 'GET'
         })
         .done(function(mbrelease) {
-            console.log(mbrelease);
             $('#mb-title').html('<h3>' + mbrelease.title);
         });
 
@@ -21,7 +20,6 @@ $.ajax({
             method: 'GET'
         })
         .done(function(mbartist) {
-            console.log(mbartist.tags);
             var tags = mbartist.tags;
             for (i=0; i<tags.length; i++) {
                 $('#mb-tags').append("  " + tags[i].name);
