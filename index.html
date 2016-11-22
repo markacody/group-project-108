@@ -15,6 +15,29 @@
 </head>
 <body>
 	<h1>Team 108, mkay?!</h1>
+	<p>Still a git blue belt.</p>
+	<label for="song-search">Search for a song:</label>
+	<input type="text" name="" id="song-search" placeholder="Search Artist Name, Track, Album or Playlist">
+	<input type="submit" value="Submit" id="submitSong">
 	<script src="assets/javascript/script.js"></script>
 </body>
 </html>
+
+<!-- Firebase: 1. create new project 2. add firebase url 3. add to editor
+
+create firebase reference:  var dbRef = firebase.database().ref().child('text')
+	ref gets to root and child creates next node
+
+Realtime Database: need a database reference
+value event
+	dbRef.on('event-type ie value', snap<is a data snapshot>=> console.log(snap.val()));
+	can create object in database...any change within the object updates whole object
+child event
+	create lists within value
+	'child-added' event doesn't listen to when child has been changed or removed
+	'child-changed' event
+Firebase Auth: 
+	firebase.auth();
+	auth.signInWithEmailAndPassword(email, pass);
+	auth.createUserWithEmailAndPassword(email, pass);
+	auth.onAuthStateChanged(firebaseUser => {}); -->
