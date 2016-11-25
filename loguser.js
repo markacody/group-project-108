@@ -15,6 +15,7 @@ var password = '';
 var displayName = '';
 var user = firebase.auth().currentUser;
 var dataRef = firebase.database();
+var currentUser = '';
 //Set up Signing in Auth Firebase - musicApp - Authentication=============
 //Login
 $('#btnLogin').on('click', function () {
@@ -41,6 +42,7 @@ $('#btnSignUp').on('click', function () {
     email = $('#txtEmail').val().trim();
     password = $('#txtPassword').val().trim();
     displayName = $('#displayName').val().trim();
+    console.log(displayName);
     firebase.auth().createUserWithEmailAndPassword(email, password).catch(function (error) {
         // Handle Errors here.
         var errorCode = error.code;
@@ -64,31 +66,40 @@ $('#btnLogOut').on('click', function () {
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         // User is signed in.
-        console.log("User Object: " + user);
-        var dataRef = firebase.database();
-        var userRef = dataRef.ref('/users/');
-        userRef.update({
-            user: user.uid,
-            displayName: user.displayName,
+        currentUser = user;
+        console.log("Provider: " + currentUser.provider);
+        console.log(currentUser.uid);
+        console.log(currentUser);
+        // var userRef = dataRef.ref('/users/');
+        // Code for handling the push
+        dataRef.ref('users/' + user.uid + '/profile').set({
+            userID: user.uid,
+            email: user.email,
+            displayName: displayName,
             dateAdded: firebase.database.ServerValue.TIMESTAMP
         });
         $('#btnLogOut').removeClass('hide');
+        $('.form-signup').addClass('hide');
     } else {
         // No user is signed in.
         console.log('not logged in');
         $('#btnLogOut').addClass('hide');
+        $('.form-signup').removeClass('hide');
     }
 });
 // Firebase watcher 
-// **** Using .on("value", function(snapshot)) syntax will retrieve the data from the database (both initially and everytime something changes)
-// This will then store the data inside the variable "snapshot". We could rename "snapshot" to anything.
-dataRef.ref().on("child_added", function (childSnapshot) {
+// Using .on("", function(snapshot)) syntax will retrieve the data from the database (both initially and everytime something changes)
+// This will then store the data inside the variable "snapshot"
+dataRef.ref('users/' + currentUser.uid + '/profile').on("value", function (childSnapshot) {
     // Log everything that's coming out of snapshot
+    console.log(childSnapshot.val());
     console.log(childSnapshot.val().displayName);
-    console.log(childSnapshot.val().user);
     console.log(childSnapshot.val().dateAdded);
-    // full list of items to the well
-    $("#member-list").append("<div class='well'><span id='name'> " + childSnapshot.val().user + " </span><span id='email'> " + childSnapshot.val().displayName + " </span><span id='age'> " + childSnapshot.val().dateAdded + " </span></div>");
+    console.log(childSnapshot.val().currentUser.uid);
+    console.log(currentUser.uid);
+    if (childSnapshot.val().userID === user.userID) {
+        $("#member-list").append("<div class='well'><span id='displayname'> " + childSnapshot.val().displayName + " </span><span id='email'> " + childSnapshot.val().email + " </span><span id='dateAdded'> " + childSnapshot.val().dateAdded + " </span></div>");
+    }
     // Handle the errors
 }, function (errorObject) {
     console.log("Errors handled: " + errorObject.code);
@@ -100,12 +111,6 @@ dataRef.ref().orderByChild("dateAdded").limitToLast(1).on("child_added", functio
     $("#age-display").html(snapshot.val().age);
     $("#comment-display").html(snapshot.val().comment);
 });
-// Add each train's data into the table
-// $("#employee-table > tbody").append("<tr><td>" + empName + "</td><td>" + empRole + "</td><td>" + empStartPretty + "</td><td>" + empMonths + "</td><td>" + empRate + "</td><td>" + empBilled + "</td></tr>");
-// });
-// Add User Auth to FB Database
-//Get the firebase reference    
-// var dataRef = firebase.database();
 // dataRef.onAuth(function (authData) {
 //     if (authData && isNewUser) {
 //         dataRef.child("users").child(authData.uid).set({
@@ -125,4 +130,93 @@ dataRef.ref().orderByChild("dateAdded").limitToLast(1).on("child_added", functio
 //         console.log("  Photo URL: " + profile.photoURL);
 //     });
 // }
-//Can update user account info and linking auth provider credentials ... save for later
+//Can update user account info and linking auth provider credentials
+/**
+ * Writes the user's data to the database.
+ */
+// [START basic_write]
+function writeUserData(userId, name, email, imageUrl) {
+    firebase.database().ref('users/' + userId).set({
+        username: name,
+        email: email,
+        profile_picture: imageUrl
+    });
+}
+/**
+ * Cleanups the UI and removes all Firebase listeners.
+ */
+function cleanupUi() {
+    // Remove all previously displayed posts.
+    topUserPostsSection.getElementsByClassName('posts-container')[0].innerHTML = '';
+    recentPostsSection.getElementsByClassName('posts-container')[0].innerHTML = '';
+    userPostsSection.getElementsByClassName('posts-container')[0].innerHTML = '';
+    // Stop all currently listening Firebase listeners.
+    listeningFirebaseRefs.forEach(function (ref) {
+        ref.off();
+    });
+    listeningFirebaseRefs = [];
+}
+/**
+ * The ID of the currently signed-in User. We keep track of this to detect Auth state change events that are just
+ * programmatic token refresh but not a User status change.
+ */
+var currentUID;
+/**
+ * Triggers every time there is a change in the Firebase auth state (i.e. user signed-in or user signed out).
+ */
+function onAuthStateChanged(user) {
+    // We ignore token refresh events.
+    if (user && currentUID === user.uid) {
+        return;
+    }
+    cleanupUi();
+    if (user) {
+        currentUID = user.uid;
+        splashPage.style.display = 'none';
+        writeUserData(user.uid, user.displayName, user.email, user.photoURL);
+        startDatabaseQueries();
+    } else {
+        // Set currentUID to null.
+        currentUID = null;
+        // Display the splash page where you can sign-in.
+        splashPage.style.display = '';
+    }
+}
+/**
+ * Displays the given section element and changes styling of the given button.
+ */
+function showSection(sectionElement, buttonElement) {
+    recentPostsSection.style.display = 'none';
+    userPostsSection.style.display = 'none';
+    topUserPostsSection.style.display = 'none';
+    addPost.style.display = 'none';
+    recentMenuButton.classList.remove('is-active');
+    myPostsMenuButton.classList.remove('is-active');
+    myTopPostsMenuButton.classList.remove('is-active');
+    if (sectionElement) {
+        sectionElement.style.display = 'block';
+    }
+    if (buttonElement) {
+        buttonElement.classList.add('is-active');
+    }
+}
+// Bindings on load.
+window.addEventListener('load', function () {
+    // Bind Sign in button.
+    $('#signInButton').on('click', function () {
+        var provider = new firebase.auth.GoogleAuthProvider();
+        firebase.auth().signInWithPopup(provider);
+    });
+    // Listen for auth state changes
+    firebase.auth().onAuthStateChanged(onAuthStateChanged);
+    // Bind menu buttons.
+    recentMenuButton.onclick = function () {
+        showSection(recentPostsSection, recentMenuButton);
+    };
+    addButton.onclick = function () {
+        showSection(addPost);
+        messageInput.value = '';
+        titleInput.value = '';
+    };
+    recentMenuButton.onclick();
+}, false);
