@@ -1,11 +1,27 @@
 
 .box {
-	background-color: #e2e2e2;
-	border-color: #eee;
+	background-color: #222;
+	border-color: #444;
 	border-style: solid;
-	border-width: .5em;
-	border-radius: 2em;
+	border-width: .2em;
 	padding: 2em;
 	height: auto;
 	width: 100%;
+	color: #eee;
+}
+
+.jumbotron h1 {
+	color: #eee;
+	font-family:'Bungee Inline', cursive;
+	background-color: rgba(0, 0, 0, 0);
+}
+
+.header {
+	background-color: rgba(0, 0, 0, 0);
+}
+body {
+    background-image: url("../images/waveform.png");
+    background-repeat: repeat-x;
+    background-position: left top; 
+    background-color: #000;
 }

@@ -2,18 +2,30 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
+	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
 	<title>Sharify Your Mind</title>
+	<!-- GOOGLE FONTS -->
+	<link href="https://fonts.googleapis.com/css?family=Bungee+Inline" rel="stylesheet">
+	<!-- Bootstrap -->
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-	<script src="https://code.jquery.com/jquery-3.1.1.min.js"
-	  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-	  crossorigin="anonymous"></script>
+
+	<!-- FIREBASE -->
 	<script src="https://www.gstatic.com/firebasejs/3.5.2/firebase.js">
 	</script>
+	<!-- MUSIXMATCH -->
 	<script type="text/javascript" src="http://tracking.musixmatch.com/t1.0/AMa6hJCIEzn1v8RuOP"></script>
+	<!-- JQUERY FROM GOOGLE APIs -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <!-- GITHUB USER CONTENT for OAUTH and SHA -->
+    <script type="text/javascript" src="https://raw.githubusercontent.com/rmxdave/phnx/master/lib/OAuth/OAuth.js"></script>            
+    <script type="text/javascript" src="https://raw.githubusercontent.com/rmxdave/phnx/master/lib/OAuth/SHA1.js"></script>
+    <!-- LOCAL SCRIPTS -->
 	<link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-<header class="jumbotron">
+<header class="jumbotron header row">
+	<!-- <img src="assets/images/waveform.png" alt=""> -->
 	<div class="container">
 		<h1>Sharify</h1>
 	</div>
@@ -22,7 +34,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-8">
-				<p class='box'>Search a song and play a clip of that song.</p>
+				<p class='box player'></p>
 			</div>
 			<div class="col-sm-4">
 				<p class='box'>Message another user about currently playing song</p>
@@ -32,7 +44,7 @@
 			<div class="col-sm-8">
 				<div class='box'>
 				<p id="mb-title"></p>
-				<p id="mb-tags"></p>
+				<p><strong>Tagged:</strong> <span id="mb-tags"></span></p>
 				<p id="lyrics">
 					
 				</p>
@@ -48,5 +60,9 @@
 </main>
 <script src="assets/javascript/lyrics.js"></script>
 <script src="assets/javascript/musicbrainz.js"></script>
+<script type="text/javascript" src='assets/javascript/oauth.js'></script>
+<script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="anonymous"></script>
+<script src="https://connect.soundcloud.com/sdk/sdk-3.1.2.js"></script>
+<script src="assets/javascript/spotify.js"></script>
 </body>
 </html>
