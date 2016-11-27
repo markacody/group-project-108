@@ -11,45 +11,110 @@
 	</script>
 	<script src="https://www.gstatic.com/firebasejs/3.5.2/firebase.js">
 	</script>
-	<link rel="stylesheet" href="notmadestyle.css">
+	<!-- <link rel="stylesheet" href="main.css"> -->
+	<link rel="stylesheet" type="text/css" href="form.css">
 </head>
 <body>
+	<!-- Content To Display When User Logs In -->
 	<header>
-		 <div id="user-container">
-	        <div hidden id="user-pic"></div>
-	        <div hidden id="user-name"></div>
-	        <button hidden id="sign-out" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
-	          Sign-out
-	        </button>
-	        <button hidden id="sign-in" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-color-text--white">
-	          <i class="material-icons">account_circle</i>Sign-in with Google
-	        </button>
-      </div>
+		 <div id="user-container" class="hide">
+		 	<div id="userData"></div>
+	        <div id="user-pic">Picture Holder</div>
+	        <div id="user-name">User Name Holder</div>
+	        <button id="btnLogOut" class="btn btn-action">
+			Log Out
+			</button>
+      	</div>
 	</header>
+	 <!-- Initial Sign Up or Sign In Form -->
+	<div id="loginForm" class=''>
 	<div class="container form-signup">
-		<h1>Sign Up!</h1>
-		<label for="displayName">User Name:</label>
-		<input type="text" id="displayName" placeholder="User Name"> 
-		<label for="txtEmail">Email:</label> 
-		<input type="email" id="txtEmail" placeholder="Email Here">
-		<label for="txtPassword">Password:</label> 
-		<input type="password" id="txtPassword" placeholder="Password"></br>
-		<button id="btnLogin" class="btn btn-action">
+		<!-- Select between Sign in or Sign Up -->
+		<ul class="tab-group">
+	        <li class="tab active"><a href="#signup">Sign Up</a></li>
+	        <li class="tab"><a href="#login">Log In</a></li>
+      	</ul>
+      <!-- Sign Up Div -->
+    <div class="tab-content">
+      <div id="signup">
+      	<h1>Sign Up!</h1>
+      	<div class="field-wrap">
+			<label for="displayName">
+				User Name:<span class="req">*</span>
+			</label>
+			<input type="text" id="displayName" required />
+		</div>
+		<div class="field-wrap">
+			<label for="txtEmail">
+				Email:<span class="req">*</span>
+			</label> 
+			<input type="email" id="txtEmail" required />
+		</div>
+		<div class="field-wrap">
+			<label for="txtPassword">
+				Password:<span class="req">*</span>
+			</label> 
+			<input type="password" id="txtPassword"  required /></br>
+		</div>
+			<div class="message-alert">
+    		</div>
+			<button id="btnSignUp" class="btn btn-action button button-block">
+			Sign Up
+			</button>
+		<!-- Firebase Auth and Oauth Sign In Options -->
+		<div>
+	      <button id="sign-in-button" class="btn btn-action button button-block">
+	      	Sign-in with Google
+	      </button>
+	       <button id="sign-in-spotify" class="btn btn-action button button-block">
+	      		Sign-in with Spotify
+	    	</button>
+		     <button id="sign-in-soundcloud" class="btn btn-action button button-block">
+		  	Sign-in with SoundCloud
+		    </button>
+    	</div>
+    </div> <!-- end of full form-signup div -->
+	<!-- Login DIV -->
+	<div id="login">   
+        <h1>Welcome Back!</h1>
+        <div class="field-wrap">
+			<label for="emailBack">
+				Email:<span class="req">*</span>
+			</label> 
+			<input type="email" id="emailBack" required />
+		</div>
+		<div class="field-wrap">
+			<label for="passwordBack">
+				Password:<span class="req">*</span>
+			</label> 
+			<input type="password" id="passwordBack" required /></br>
+		</div>
+          
+          <p class="forgot"><a href="#">Forgot Password?</a></p>
+         <button id="btnLogin" class="btn btn-action button button-block">
 			Log In
 		</button>
-		<button id="btnSignUp" class="btn btn-secondary">
-			Sign Up
-		</button>
-	</div>
-		<button id="btnLogOut" class="btn btn-action hide">
-			Log Out
-		</button>
-	<div>
-      <button id="sign-in-button" class="mdl-button--raised mdl-button mdl-js-button mdl-js-ripple-effect"><i class="material-icons">account_circle</i> Sign in with Google</button>
+			<div class="message-alert">
+    		</div>
+		<!-- Firebase Auth and Oauth Sign In Options -->
+		<div>
+	      <button id="sign-in-button" class="btn btn-action button button-block">
+	      	Sign in with Google
+	      </button>
+	       <button id="sign-in-spotify" class="btn btn-action button button-block">
+	      		Sign-in with Spotify
+	    	</button>
+		     <button id="sign-in-soundcloud" class="btn btn-action button button-block">
+		  	Sign-in with SoundCloud
+		    </button>
+    	</div>
     </div>
+    	
+</div> <!-- end of full for tab content -->
+</div>
 
   <!-- Header section containing logo and menu -->
-  <header class="header mdl-layout__header mdl-color-text--white mdl-color--light-blue-700">
+  <header class="hide header mdl-layout__header mdl-color-text--white mdl-color--light-blue-700">
 
     <div class="mdl-layout__header-row titlebar">
       <h3 class="logo">Database Web Quickstart</h3>
@@ -78,5 +143,6 @@
 	<div id="member-list">
 	</div> 
 	<script src="loguser.js"></script>
+	<script src="formdesign.js"></script>
 </body>
 </html>
