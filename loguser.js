@@ -16,18 +16,15 @@ var displayName = '';
 var user = firebase.auth().currentUser;
 var dataRef = firebase.database();
 var currentUser = '';
-/**
- * Triggers every time there is a change in the Firebase auth state (i.e. user signed-in or user signed out).
- */
-// function writeUserData(currentUser, email, displayName, imageURL) {
-//     // Code for handling the push
-//     dataRef.ref('users/' + currentUser + '/profile').set({
-//         userID: currentUser,
-//         email: email,
-//         displayName: displayName,
-//         profile_picture: imageURL
-//     });
-// }
+//SEARCH BAR API QUERY and INTERACTION =========
+$('#mainsearch').on('click', function () {
+    searchTerm = $('.searchinput').val().trim();
+    console.log(searchTerm);
+    searchNoSpaces = searchTerm.replace(/ /gi, '+');
+    console.log(searchNoSpaces);
+    searchCriteria = $("#myDropdown option:selected").text();
+    console.log(searchCriteria);
+});
 //Set up Signing in Auth Firebase Authentication=============
 //Login
 $('#btnLogin').on('click', function () {
@@ -46,7 +43,7 @@ $('#btnLogin').on('click', function () {
     });
     return false;
 });
-//Creating an Account
+//Creating an Account 
 $('#btnSignUp').on('click', function () {
     //Store Input in Variables
     email = $('#txtEmail').val().trim();
@@ -63,7 +60,6 @@ $('#btnSignUp').on('click', function () {
             $(".message-alert").html('<p>' + errorMessage + '</p>');
         }
         console.log(error);
-        //https://firebase.google.com/docs/reference/js/firebase.auth.Auth#createUserWithEmailAndPassword
     });
     return false;
 });
@@ -71,7 +67,6 @@ $('#btnSignUp').on('click', function () {
 $('#btnLogOut').on('click', function () {
     $('.well').remove();
     firebase.auth().signOut();
-    //User Status - a Real Time Listener takes a callback  - everytime state changes sign in or sign out (null)
 });
 //Get Active User Profile and Add to DB
 firebase.auth().onAuthStateChanged(function (user) {
@@ -88,10 +83,12 @@ firebase.auth().onAuthStateChanged(function (user) {
         console.log(currentUser);
         console.log("Email: " + user.email);
         console.log("displayName: " + displayName);
-        console.log("dateAdded: " + firebase.database.ServerValue.TIMESTAMP);
+        //Could Turn All DOM Updates to Function
         $('#btnLogOut').removeClass('hide');
+        $('.search_bar').removeClass('hide');
         $('#loginForm').addClass('hide');
         $('#user-container').removeClass('hide');
+        //Adds User Auth Data to Firebase Database
         dataRef.ref('users/' + user.uid + '/profile').set({
             userID: user.uid,
             email: user.email,
@@ -102,16 +99,15 @@ firebase.auth().onAuthStateChanged(function (user) {
         // No user is signed in.
         console.log('not logged in');
         // Set currentUID to null.
-        currentUID = null;
+        currentUser = null;
         $('#btnLogOut').addClass('hide');
+        $('.search_bar').addClass('hide');
         $('#loginForm').removeClass('hide');
         $('.form-signup').removeClass('hide');
         $('#user-container').addClass('hide');
     }
 });
-// Firebase watcher 
-// Using .on("", function(snapshot)) syntax will retrieve the data from the database (both initially and everytime something changes)
-// This will then store the data inside the variable "snapshot"
+
 function userProfileToDom() {
     dataRef.ref('users/' + currentUser + '/profile').on("value", function (childSnapshot) {
         // Log everything that's coming out of snapshot
@@ -125,6 +121,46 @@ function userProfileToDom() {
         console.log("Errors handled: " + errorObject.code);
     });
 }
+// Bind Provider Sign in buttons.
+$('#sign-in-button').on('click', function () {
+    var provider = new firebase.auth.GoogleAuthProvider();
+    firebase.auth().signInWithPopup(provider);
+});
+//Spotify Oauth Grab Token
+$('#sign-in-spotify').on('click', function () {
+    firebase.auth().signInWithCustomToken(token).catch(function (error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        if (errorCode) {
+            $(".message-alert").html('<p>' + errorMessage + '</p>');
+        }
+        console.log(error);
+        // ...
+    });
+});
+//Linking Multiple Provider Accounts
+auth.currentUser.linkWithPopup(provider).then(function (result) {
+    // Accounts successfully linked.
+    var credential = result.credential;
+    var user = result.user;
+    // ...
+}).catch(function (error) {
+    // Handle Errors here.
+    // ...
+});
+auth.currentUser.link(firebase.auth.EmailAuthProvider.credential(auth.currentUser.email, 'password'));
+firebase.auth().getRedirectResult().then(function (result) {
+    if (result.credential) {
+        // Accounts successfully linked.
+        var credential = result.credential;
+        var user = result.user;
+        // ...
+    }
+}).catch(function (error) {
+    // Handle Errors here.
+    // ...
+});
 // dataRef.onAuth(function (authData) {
 //     if (authData && isNewUser) {
 //         dataRef.child("users").child(authData.uid).set({
@@ -144,46 +180,3 @@ function userProfileToDom() {
 //         console.log("  Photo URL: " + profile.photoURL);
 //     });
 // }
-//Can update user account info and linking auth provider credentials
-/**
-
-/**
- * The ID of the currently signed-in User. We keep track of this to detect Auth state change events that are just
- * programmatic token refresh but not a User status change.
- */
-/**
- * Displays the given section element and changes styling of the given button.
- */
-// function showSection(sectionElement, buttonElement) {
-//     recentPostsSection.style.display = 'none';
-//     userPostsSection.style.display = 'none';
-//     topUserPostsSection.style.display = 'none';
-//     addPost.style.display = 'none';
-//     recentMenuButton.classList.remove('is-active');
-//     myPostsMenuButton.classList.remove('is-active');
-//     myTopPostsMenuButton.classList.remove('is-active');
-//     if (sectionElement) {
-//         sectionElement.style.display = 'block';
-//     }
-//     if (buttonElement) {
-//         buttonElement.classList.add('is-active');
-//     }
-// }
-// Bindings on load.
-// Bind Sign in button.
-$('#sign-in-button').on('click', function () {
-    var provider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth().signInWithPopup(provider);
-});
-// // Listen for auth state changes
-// firebase.auth().onAuthStateChanged(onAuthStateChanged);
-// // Bind menu buttons.
-// recentMenuButton.onclick = function () {
-//     showSection(recentPostsSection, recentMenuButton);
-// };
-// addButton.onclick = function () {
-//     showSection(addPost);
-//     messageInput.value = '';
-//     titleInput.value = '';
-// };
-// recentMenuButton.onclick();
