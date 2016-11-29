@@ -84,6 +84,7 @@ firebase.auth().onAuthStateChanged(function (user) {
         console.log("Email: " + user.email);
         console.log("displayName: " + displayName);
         //Could Turn All DOM Updates to Function
+        $('main').removeClass('hide');
         $('#btnLogOut').removeClass('hide');
         $('.search_bar').removeClass('hide');
         $('#loginForm').addClass('hide');
@@ -100,6 +101,7 @@ firebase.auth().onAuthStateChanged(function (user) {
         console.log('not logged in');
         // Set currentUID to null.
         currentUser = null;
+        $('main').addClass('hide');
         $('#btnLogOut').addClass('hide');
         $('.search_bar').addClass('hide');
         $('#loginForm').removeClass('hide');
@@ -115,7 +117,7 @@ function userProfileToDom() {
         console.log(childSnapshot.val().displayName);
         console.log(childSnapshot.val().dateAdded);
         console.log(childSnapshot.val().currentUser);
-        $("#userData").html("<div class='well'><span id='displayname'> " + displayName + " </span><span id='email'> " + childSnapshot.val().email + "</div>");
+        // $("#userData").html("<div class='well'><span id='displayname'> " + displayName + " </span><span id='email'> " + childSnapshot.val().email + "</div>");
         // Handle the errors
     }, function (errorObject) {
         console.log("Errors handled: " + errorObject.code);
