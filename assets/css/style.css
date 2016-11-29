@@ -25,3 +25,7 @@ body {
     background-position: left top; 
     background-color: #000;
 }
+header .tagline {
+	font-size: 1.2em;
+	color: #ccc;
+}
