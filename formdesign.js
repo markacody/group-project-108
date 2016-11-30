@@ -32,21 +32,5 @@ $('.tab a').on('click', function (e) {
 });
 // SEARCH BAR 
 $('.dropbtn').on('click', function () {
-    $('#myDropdown').toggleClass('show');
-});
-$('option').on('click', function () {
-    //select specific click
-});
-// Close the dropdown menu if the user clicks outside of it
-$(document).on('click', function () {
-    if (!event.target.matches('.dropbtn')) {
-        var dropdowns = $(".dropdown-content");
-        var i;
-        for (i = 0; i < dropdowns.length; i++) {
-            var openDropdown = dropdowns[i];
-            if (openDropdown.classList.contains('show')) {
-                openDropdown.classList.remove('show');
-            }
-        }
-    }
+    return false;
 });

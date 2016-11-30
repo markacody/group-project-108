@@ -16,15 +16,15 @@ var displayName = '';
 var user = firebase.auth().currentUser;
 var dataRef = firebase.database();
 var currentUser = '';
-//SEARCH BAR API QUERY and INTERACTION =========
-$('#mainsearch').on('click', function () {
-    searchTerm = $('.searchinput').val().trim();
-    console.log(searchTerm);
-    searchNoSpaces = searchTerm.replace(/ /gi, '+');
-    console.log(searchNoSpaces);
-    searchCriteria = $("#myDropdown option:selected").text();
-    console.log(searchCriteria);
-});
+// //SEARCH BAR API QUERY and INTERACTION =========
+// $('#mainsearch').on('click', function () {
+//     searchTerm = $('.searchinput').val().trim();
+//     console.log(searchTerm);
+//     searchNoSpaces = searchTerm.replace(/ /gi, '+');
+//     console.log(searchNoSpaces);
+//     searchCriteria = $("#myDropdown option:selected").text();
+//     console.log(searchCriteria);
+// });
 //Set up Signing in Auth Firebase Authentication=============
 //Login
 $('#btnLogin').on('click', function () {
@@ -60,6 +60,9 @@ $('#btnSignUp').on('click', function () {
             $(".message-alert").html('<p>' + errorMessage + '</p>');
         }
         console.log(error);
+        firebase.auth().currentUser.updateProfile({
+            displayName: displayName
+        });
     });
     return false;
 });
@@ -93,7 +96,7 @@ firebase.auth().onAuthStateChanged(function (user) {
         dataRef.ref('users/' + user.uid + '/profile').set({
             userID: user.uid,
             email: user.email,
-            displayName: displayName
+            displayName: user.displayName
         });
         userProfileToDom();
     } else {
@@ -117,8 +120,7 @@ function userProfileToDom() {
         console.log(childSnapshot.val().displayName);
         console.log(childSnapshot.val().dateAdded);
         console.log(childSnapshot.val().currentUser);
-        // $("#userData").html("<div class='well'><span id='displayname'> " + displayName + " </span><span id='email'> " + childSnapshot.val().email + "</div>");
-        // Handle the errors
+        $("#userData").html("<div class='userInfo'><span id='displayname'> ROCK ON " + displayName + "! </span></br><span id='email'> You're signed in with " + childSnapshot.val().email + "</div>");
     }, function (errorObject) {
         console.log("Errors handled: " + errorObject.code);
     });

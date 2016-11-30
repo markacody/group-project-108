@@ -22,26 +22,27 @@
 	  src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
 	  integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
 	  crossorigin="anonymous"></script>
-    <!-- LOCAL SCRIPTS -->
+    <!-- STYLING  -->
 	<link rel="stylesheet" href="assets/css/style.css">
 	<link rel="stylesheet" type="text/css" href="form.css">
 </head>
 <body>
+<!-- MAIN PAGE HEADER BAR =======================================-->
 <header class="jumbotron header row">
-	<!-- <img src="assets/images/waveform.png" alt=""> -->
-	<div class="container">
+	<div class="col-md-6">
 		<h1>Sharify</h1>
 	</div>
-	<div id="user-container" class="hide">
+	<!-- DISPLAYS USER DETAIL IN HEADER UPON LOG IN -->
+	<div id="user-container" class="hide col-md-6">
 		 	<div id="userData"></div>
-	        <div id="user-pic">Picture Holder</div>
-	        <div id="user-name">User Name Holder</div>
+	        <div id="user-email"></div>
 	        <button id="btnLogOut" class="btn btn-action">
 			Log Out
 			</button>
 			<!-- Adding Data To The DOM Upon Log In -->
 			<div id="member-list"> </div> 
 	</div>
+	
 </header>
 
 <!-- LOGIN INFORMATION============================================== -->
@@ -87,9 +88,6 @@
 			       <button id="sign-in-spotify" class="btn btn-action button button-block">
 			      		Sign-in with Spotify
 			    	</button>
-				     <button id="sign-in-soundcloud" class="btn btn-action button button-block">
-				  	Sign-in with SoundCloud
-				    </button>
 		    	</div>
 		    </div> <!-- end of full form-signup div -->
 			<!-- Login DIV -->
@@ -122,9 +120,6 @@
 			       <button id="sign-in-spotify" class="btn btn-action button button-block">
 			      		Sign-in with Spotify
 			    	</button>
-				     <button id="sign-in-soundcloud" class="btn btn-action button button-block">
-				  	Sign-in with SoundCloud
-				    </button>
 		    	</div>
 		    </div>
 		    	
@@ -132,29 +127,33 @@
 	</div>
 </div>
 <!-- END LOGIN INFORMATION ==========================================-->
+<!-- HIDING MAIN PAGE CONTENTS UNTIL LOG IN -->
 <main class="hide">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-12">
-					<!--Search Bar for Main Page -->
+				<!--Search Bar for Main Page -->
 				<form class="search_bar">
 					<div class='search'>
 							<input class='searchinput' type="text" placeholder="Search for Soundwaves" />
 					  		<button id='mainsearch' type="submit" value="Search">Search</button>
-					  	
+					  		<!-- DROP DOWN SELECTOR WITHIN SEARCHBAR -->
 							<div class="dropdown">
 								  <button class="dropbtn">Select</button>
-								  <div id="myDropdown" class="dropdown-content">
-								  	<option value="0" selected>All</option>
-				                    <option value="1">Artist</option>
-				                    <option value="2">Song</option>
-				                    <option value="3">Album</option>
-				                    <option value="4">Friend</option>
+								 <div id="myDropdown" class="dropdown-content">
+									 <select>
+									  	<option value="0">all</option>
+					                    <option value="1">artist</option>
+					                    <option value="2" selected>track</option>
+					                    <option value="3">album</option>
+					                    <option value="4">friend</option>
+					                   <select>
 								</div>
 							</div>
 					</div>
 				</form>
 			</div>
+			<!-- DIV FOR LOADING SPOTIFY SONG RESULT -->
 			<div class="col-sm-8">
 				<p class='box player'></p>
 						</div>
