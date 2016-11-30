@@ -6,22 +6,23 @@ html {
   overflow-y: scroll;
 }
 
-body {
+ body {
   background: #c1bdba;
   font-family: sans-serif;
 }
 
-a {
+/*LOGIN PAGE DESIGN ==========================================*/
+.loginAll a {
   text-decoration: none;
   color: #1ab188;
   -webkit-transition: .5s ease;
   transition: .5s ease;
 }
-a:hover {
+.loginAll a:hover {
   color: #179b77;
 }
 
-.form-signup {
+.loginAll .form-signup {
   background: rgba(19, 35, 47, 0.9);
   padding: 40px;
   max-width: 600px;
@@ -30,17 +31,17 @@ a:hover {
   box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.3);
 }
 
-.tab-group {
+.loginAll .tab-group {
   list-style: none;
   padding: 0;
   margin: 0 0 40px 0;
 }
-.tab-group:after {
+.loginAll .tab-group:after {
   content: "";
   display: table;
   clear: both;
 }
-.tab-group li a {
+.loginAll .tab-group li a {
   display: block;
   text-decoration: none;
   padding: 15px;
@@ -54,27 +55,27 @@ a:hover {
   -webkit-transition: .5s ease;
   transition: .5s ease;
 }
-.tab-group li a:hover {
+.loginAll .tab-group li a:hover {
   background: #179b77;
   color: #ffffff;
 }
-.tab-group .active a {
+.loginAll .tab-group .active a {
   background: #1ab188;
   color: #ffffff;
 }
 
-.tab-content > div:last-child {
+.loginAll .tab-content > div:last-child {
   display: none;
 }
 
-h1 {
+.loginAll h1 {
   text-align: center;
   color: #ffffff;
   font-weight: 300;
   margin: 0 0 40px;
 }
 
-label {
+.loginAll label {
   position: absolute;
   -webkit-transform: translateY(6px);
           transform: translateY(6px);
@@ -86,26 +87,26 @@ label {
   pointer-events: none;
   font-size: 22px;
 }
-label .req {
+.loginAll label .req {
   margin: 2px;
   color: #1ab188;
 }
 
-label.active {
+.loginAll label.active {
   -webkit-transform: translateY(-30px);
           transform: translateY(-30px);
   left: 2px;
   font-size: 14px;
 }
-label.active .req {
+.loginAll label.active .req {
   opacity: 0;
 }
 
-label.highlight {
+.loginAll label.highlight {
   color: #ffffff;
 }
 
-input, textarea {
+.loginAll input, textarea {
   font-size: 22px;
   display: block;
   width: 100%;
@@ -119,12 +120,12 @@ input, textarea {
   -webkit-transition: border-color .25s ease, box-shadow .25s ease;
   transition: border-color .25s ease, box-shadow .25s ease;
 }
-input:focus, textarea:focus {
+.loginAll input:focus, textarea:focus {
   outline: 0;
   border-color: #1ab188;
 }
 
-textarea {
+.loginAll textarea {
   border: 2px solid #a0b3b0;
   resize: vertical;
 }
@@ -187,9 +188,8 @@ button:hover, button:focus {
   
 }
 
-/*SEARCH BAR DESIGN ========================================================*/
+/* MAIN SEARCH BAR DESIGN ========================================================*/
 
-/*TRYING DROPDOWN BUTTON FROM W3SCHOOLS*/
 /* Dropdown Button */
 .dropbtn {
     width:150px;
@@ -201,6 +201,7 @@ button:hover, button:focus {
     position:relative;
     top:0px;
     right:0px;
+    margin-right: 2px;
 }
 
 /* Dropdown button on hover & focus */
@@ -218,9 +219,9 @@ button:hover, button:focus {
 
 /* Dropdown Content (Hidden by Default) */
 .dropdown-content {
-    display: none;
+    z-index: 10;
+    display: block;
     position: absolute;
-    background-color: #f9f9f9;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 }
@@ -262,11 +263,24 @@ button:hover, button:focus {
 
 
 /* Change color of dropdown links on hover */
-.dropdown-content option:hover {background-color: #f1f1f1}
+.dropdown-content option:hover {
+  background-color: #f1f1f1
+}
 
-/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
-.show {display:inline-block;}
+/* Show the dropdown menu on click event*/
+.dropping {
+  display:inline-block;
+}
 
 .search_bar {
-  margin-top: 10px;
+  margin: -75px 15px 110px 15px;
+  
 }
+
+select {
+  width:100%;
+  height:43px;
+  background-color: #f1f1f1;
+}
+
+/* Media Queries for SEARCHBAR SIZES */
