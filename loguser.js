@@ -16,15 +16,6 @@ var displayName = '';
 var user = firebase.auth().currentUser;
 var dataRef = firebase.database();
 var currentUser = '';
-// //SEARCH BAR API QUERY and INTERACTION =========
-// $('#mainsearch').on('click', function () {
-//     searchTerm = $('.searchinput').val().trim();
-//     console.log(searchTerm);
-//     searchNoSpaces = searchTerm.replace(/ /gi, '+');
-//     console.log(searchNoSpaces);
-//     searchCriteria = $("#myDropdown option:selected").text();
-//     console.log(searchCriteria);
-// });
 //Set up Signing in Auth Firebase Authentication=============
 //Login
 $('#btnLogin').on('click', function () {
@@ -111,7 +102,26 @@ firebase.auth().onAuthStateChanged(function (user) {
         $('.form-signup').removeClass('hide');
         $('#user-container').addClass('hide');
     }
+    // LOG USER INPUTS
+    $('#mainsearch').on('click', function () {
+        searchTerm = $('.searchinput').val().trim();
+        searchCriteria = $("#myDropdown option:selected").text();
+        dataRef.ref('users/' + user.uid + '/searches').set({
+            search: searchTerm,
+            searchtype: searchCriteria
+        });
+        searchToDom();
+        return false;
+    });
 });
+
+function searchToDom() {
+    dataRef.ref('users/' + currentUser + '/searches').on("value", function (childSnapshot) {
+        $(".searchupdate").append("<tr class='dynamicSearch'><td class='searchtype'>" + childSnapshot.val().searchtype + "</td><td class='searchPhrase'> " + childSnapshot.val().search + "</td></tr>");
+    }, function (errorObject) {
+        console.log("Errors handled: " + errorObject.code);
+    });
+}
 
 function userProfileToDom() {
     dataRef.ref('users/' + currentUser + '/profile').on("value", function (childSnapshot) {
@@ -142,28 +152,6 @@ $('#sign-in-spotify').on('click', function () {
         console.log(error);
         // ...
     });
-});
-//Linking Multiple Provider Accounts
-auth.currentUser.linkWithPopup(provider).then(function (result) {
-    // Accounts successfully linked.
-    var credential = result.credential;
-    var user = result.user;
-    // ...
-}).catch(function (error) {
-    // Handle Errors here.
-    // ...
-});
-auth.currentUser.link(firebase.auth.EmailAuthProvider.credential(auth.currentUser.email, 'password'));
-firebase.auth().getRedirectResult().then(function (result) {
-    if (result.credential) {
-        // Accounts successfully linked.
-        var credential = result.credential;
-        var user = result.user;
-        // ...
-    }
-}).catch(function (error) {
-    // Handle Errors here.
-    // ...
 });
 // dataRef.onAuth(function (authData) {
 //     if (authData && isNewUser) {
