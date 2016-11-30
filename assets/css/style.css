@@ -42,7 +42,20 @@
 header .tagline {
 	font-size: 1.2em;
 	color: #ccc;
+
 }
 .under-construction {
 	display: none;
+	padding-left: 85px;
 }
+
+table {
+	text-align: center;
+}
+
+th {
+	padding: 12px;
+}
+
+tr {
+	padding:12px;
