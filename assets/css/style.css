@@ -59,3 +59,11 @@ th {
 
 tr {
 	padding:12px;
+
+}
+
+.load {
+	display: none;
+	max-width: 200px;
+}
+

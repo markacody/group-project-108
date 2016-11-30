@@ -22,7 +22,11 @@
 	  src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
 	  integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
 	  crossorigin="anonymous"></script>
+	<!-- CHAT -->
+	<script src="chatSocketAchex.js"></script>
     <!-- STYLING  -->
+    <link rel="stylesheet" href="css/prism.css">
+    <link rel="stylesheet" type="text/css" href="chatSocketAchex.css">
 	<link rel="stylesheet" href="assets/css/style.css">
 	<link rel="stylesheet" type="text/css" href="form.css">
 </head>
@@ -160,11 +164,11 @@
 			<!-- DIV FOR LOADING SPOTIFY SONG RESULT -->
 			<div class="col-sm-8">
 				<p class='box player'></p>
-						</div>
-			<div class="col-sm-4 under-construction">
-				<p class='box'>Message another user about currently playing song</p>
+
+				<img class="load" src="assets/images/loader.gif">
+
 			</div>
-		</div>
+
 		<div class="row">
 			<div class="col-sm-8">
 				<div class='box'>
@@ -177,9 +181,12 @@
 
 			</div>
 
-			<div class="col-sm-4 under-construction">
+			
 
-				<p class='box'>List previously played songs in a table to be added</p>
+				
+			<div class=" col-sm-4">
+				<p class='box'>Previously Searched For Items</p>
+
 				<table border="1" class="searchupdate">
 					<tr>
 						<th>Search Types</th>
@@ -188,7 +195,30 @@
 				</table>
 			</div>
 		</div>
-	</div>		
+	</div>
+	<div class="col-sm-4">
+
+						    <div class="chat">
+						        <br/>  
+						        
+						         <div class="chat search">
+						            <div id="ListaOnline">
+						               
+						            </div>
+						            
+						         </div>   
+						         
+						          <div class="chat results">            
+						          <div id="Elchat"></div>
+						          </div>   
+						
+						            
+						        
+						      <script type="text/javascript">
+						           $('#Elchat').ChatSocket({'lblEntradaNombre':'Enter a user name in the field below for the chat room'});
+						        </script>
+			</div>
+		</div>		
 </main>
 <script src="loguser.js"></script>
 <script src="formdesign.js"></script>
