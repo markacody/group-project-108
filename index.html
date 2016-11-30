@@ -2,19 +2,196 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Document</title>
+	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+	<title>Soundwave: Your Music. Your Mind. Your Life.</title>
+	<!-- GOOGLE FONTS -->
+	<link href="https://fonts.googleapis.com/css?family=Bungee+Inline" rel="stylesheet">
+	<!-- Bootstrap -->
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-	<script
-	  src="https://code.jquery.com/jquery-3.1.1.min.js"
-	  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-	  crossorigin="anonymous">
-	</script>
+
+	<!-- FIREBASE -->
 	<script src="https://www.gstatic.com/firebasejs/3.5.2/firebase.js">
 	</script>
+	<!-- MUSIXMATCH -->
+	<script type="text/javascript" src="http://tracking.musixmatch.com/t1.0/AMa6hJCIEzn1v8RuOP"></script>
+	<!-- JQUERY FROM GOOGLE APIs -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <!-- JQUERY UI CDN-->
+    <script
+	  src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+	  integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+	  crossorigin="anonymous"></script>
+    <!-- STYLING  -->
 	<link rel="stylesheet" href="assets/css/style.css">
+	<link rel="stylesheet" type="text/css" href="form.css">
 </head>
 <body>
-	<h1>Team 108, mkay?!</h1>
-	<script src="assets/javascript/script.js"></script>
+<!-- MAIN PAGE HEADER BAR =======================================-->
+<header class="jumbotron header row">
+	<div class="col-md-6">
+		<h1>Soundwave</h1>
+		<p class="tagline">your music. your mind. your life.</p>
+	</div>
+	<!-- DISPLAYS USER DETAIL IN HEADER UPON LOG IN -->
+	<div id="user-container" class="hide col-md-6">
+		 	<div id="userData"></div>
+	        <div id="user-email"></div>
+	        <button id="btnLogOut" class="btn btn-action">
+			Log Out
+			</button>
+			<!-- Adding Data To The DOM Upon Log In -->
+			<div id="member-list"> </div> 
+	</div>
+	
+</header>
+
+<!-- LOGIN INFORMATION============================================== -->
+<div id="loginForm" class='loginAll'>
+			<div class="container form-signup">
+				<!-- Select between Sign in or Sign Up -->
+				<ul class="tab-group">
+			        <li class="tab active"><a href="#signup">Sign Up</a></li>
+			        <li class="tab"><a href="#login">Log In</a></li>
+		      	</ul>
+		      <!-- Sign Up Div -->
+		    <div class="tab-content">
+		      <div id="signup">
+		      	<h1>Sign Up!</h1>
+		      	<div class="field-wrap">
+					<label for="displayName">
+						User Name:<span class="req">*</span>
+					</label>
+					<input type="text" id="displayName" required />
+				</div>
+				<div class="field-wrap">
+					<label for="txtEmail">
+						Email:<span class="req">*</span>
+					</label> 
+					<input type="email" id="txtEmail" required />
+				</div>
+				<div class="field-wrap">
+					<label for="txtPassword">
+						Password:<span class="req">*</span>
+					</label> 
+					<input type="password" id="txtPassword"  required /></br>
+				</div>
+					<div class="message-alert">
+		    		</div>
+					<button id="btnSignUp" class="btn btn-action button button-block">
+					Sign Up
+					</button>
+				<!-- Firebase Auth and Oauth Sign In Options -->
+				<div>
+			      <button id="sign-in-button" class="btn btn-action button button-block">
+			      	Sign-in with Google
+			      </button>
+			       <button id="sign-in-spotify" class="btn btn-action button button-block">
+			      		Sign-in with Spotify
+			    	</button>
+		    	</div>
+		    </div> <!-- end of full form-signup div -->
+			<!-- Login DIV -->
+			<div id="login">   
+		        <h1>Welcome Back!</h1>
+		        <div class="field-wrap">
+					<label for="emailBack">
+						Email:<span class="req">*</span>
+					</label> 
+					<input type="email" id="emailBack" required />
+				</div>
+				<div class="field-wrap">
+					<label for="passwordBack">
+						Password:<span class="req">*</span>
+					</label> 
+					<input type="password" id="passwordBack" required /></br>
+				</div>
+		          
+		          <p class="forgot"><a href="#">Forgot Password?</a></p>
+		         <button id="btnLogin" class="btn btn-action button button-block">
+					Log In
+				</button>
+					<div class="message-alert">
+		    		</div>
+				<!-- Firebase Auth and Oauth Sign In Options -->
+				<div>
+			      <button id="sign-in-button" class="btn btn-action button button-block">
+			      	Sign in with Google
+			      </button>
+			       <button id="sign-in-spotify" class="btn btn-action button button-block">
+			      		Sign-in with Spotify
+			    	</button>
+		    	</div>
+		    </div>
+		    	
+		</div> <!-- end of full for tab content -->
+	</div>
+</div>
+<!-- END LOGIN INFORMATION ==========================================-->
+<!-- HIDING MAIN PAGE CONTENTS UNTIL LOG IN -->
+<main class="hide">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<!--Search Bar for Main Page -->
+				<form class="search_bar">
+					<div class='search'>
+							<input class='searchinput' type="text" placeholder="Search for Soundwaves" />
+					  		<button id='mainsearch' type="submit" value="Search">Search</button>
+					  		<!-- DROP DOWN SELECTOR WITHIN SEARCHBAR -->
+							<div class="dropdown">
+								  <button class="dropbtn">Select</button>
+								 <div id="myDropdown" class="dropdown-content">
+									 <select>
+									  	<option value="0">all</option>
+					                    <option value="1">artist</option>
+					                    <option value="2" selected>track</option>
+					                    <option value="3">album</option>
+					                    <option value="4">friend</option>
+					                   <select>
+								</div>
+							</div>
+					</div>
+				</form>
+			</div>
+			<!-- DIV FOR LOADING SPOTIFY SONG RESULT -->
+			<div class="col-sm-8">
+				<p class='box player'></p>
+						</div>
+			<div class="col-sm-4">
+				<p class='box'>Message another user about currently playing song</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-8">
+				<div class='box'>
+				<p id="mb-title"></p>
+				<p><strong>Tagged:</strong> <span id="mb-tags"></span></p>
+				<p id="lyrics">
+					
+				</p>
+				</div>
+
+			</div>
+			<div class=" col-sm-4">
+				<p class='box'>List previously played songs in a table to be added</p>
+				<table border="1" class="searchupdate">
+					<tr>
+						<th>Search Types</th>
+						<th>Phrases Searched</th>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>		
+</main>
+<script src="loguser.js"></script>
+<script src="formdesign.js"></script>
+<script src="assets/javascript/lyrics.js"></script>
+<script src="assets/javascript/musicbrainz.js"></script>
+<script type="text/javascript" src='assets/javascript/oauth.js'></script>
+<script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="anonymous"></script>
+<script src="https://connect.soundcloud.com/sdk/sdk-3.1.2.js"></script>
+<script src="assets/javascript/spotify.js"></script>
 </body>
 </html>
