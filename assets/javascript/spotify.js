@@ -1,9 +1,14 @@
 $(document).ready(function () {
-    performSearchRequest();
+    // performSearchRequest();
     //GLOBAL VARIABLES
     var searchNoSpaces = '';
     var searchCriteria = '';
     var spotifyID = '';
+    $(document).ajaxStart(function () {
+        $('.load').show(); // show the gif image when ajax starts
+    }).ajaxStop(function () {
+        $('.load').hide(); // hide the gif image when ajax completes
+    });
     //SEARCH BAR API QUERY and INTERACTION =========
     $('#mainsearch').on('click', function () {
         searchTerm = $('.searchinput').val().trim();
@@ -16,31 +21,67 @@ $(document).ready(function () {
     });
 
     function searchForSpotifyID(searchNoSpaces, searchCriteria) {
-        var queryURL = 'https://api.spotify.com/v1/search?q=' + searchNoSpaces + '&type=' + searchCriteria + '&limit=1';
+        var queryURL = 'https://api.spotify.com/v1/search?q=' + searchNoSpaces + '&type=' + searchCriteria + '&limit=1&market=ES';
         $.ajax({
             url: queryURL,
-            method: 'GET'
+            method: 'GET',
+            error: function (xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+            }
         }).done(function (response) {
             console.log('Spotify ID response: ' + response);
             if (searchCriteria === "artist") {
                 //use artist endpoint 
                 spotifyID = response.artists.items[0].id;
+                artistTopTracks(spotifyID);
             } else if (searchCriteria === "track") {
                 //use track endpoint
                 spotifyID = response.tracks.items[0].id;
+                performSearchRequest(spotifyID);
             } else if (searchCriteria === "album") {
                 spotifyID = response.albums.items[0].id;
-                //pull first 5 songs from album endpoint
-                // /albums
+                albumTracks(spotifyID);
+                //pull top songs from album endpoint
             } else {
                 //could be just search song
             }
         });
     }
     //needs error message if no search results found or loading problem
-    function performSearchRequest() {
-        var trackID = getTrackID(); //currently searchForSpotify ID
-        var query = 'https://api.spotify.com/v1/tracks/' + '2ctvdKmETyOzPb2GiJJT53'; //replace with spotifyID
+    function artistTopTracks(spotifyID) {
+        var artistTopTrackQuery = 'https://api.spotify.com/v1/artists/' + spotifyID + '/top-tracks?country=ES';
+        $.ajax({
+            url: artistTopTrackQuery,
+            method: 'GET',
+        }).done(function (response) {
+            console.log(response);
+            spotifyID = response.tracks[0].id;
+            performSearchRequest(spotifyID);
+        });
+    }
+
+    function albumTracks(spotifyID) {
+        var albumTrackQuery = 'https://api.spotify.com/v1/albums/' + spotifyID + '/tracks?market=ES&limit=1';
+        $.ajax({
+            url: albumTrackQuery,
+            method: 'GET',
+            error: function (xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+            }
+        }).done(function (response) {
+            console.log(response);
+            spotifyID = response.items[0].id;
+            performSearchRequest(spotifyID);
+        });
+    }
+
+    function performSearchRequest(trackID) {
+        //was getTrackID();
+        console.log('trackID of search: ' + trackID);
+        var query = 'https://api.spotify.com/v1/tracks/' + trackID; //'2ctvdKmETyOzPb2GiJJT53'
+        console.log(query);
         callAJAX(query);
     }
 
@@ -52,6 +93,10 @@ $(document).ready(function () {
         $.ajax({
             url: queryURL,
             method: 'GET',
+            error: function (xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+            }
         }).done(function (response) {
             console.log(response);
             var uri = response.uri;
@@ -62,6 +107,7 @@ $(document).ready(function () {
     function createPlayWidget(id) {
         var iframePlayer = $('<iframe>');
         iframePlayer.attr('src', 'https://embed.spotify.com/track/' + id);
-        iframePlayer.appendTo('.player');
+        // iframePlayer.appendTo('.player');
+        $('.player').html(iframePlayer);
     }
 });
